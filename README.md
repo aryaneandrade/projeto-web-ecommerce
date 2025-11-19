@@ -38,6 +38,7 @@ O sistema conta com fluxo completo de vendas: Autenticação, Catálogo, Carrinh
 ## Diagramas do Projeto 
 
 ### Diagrama ER 
+![Diagrama ER](docs/diagrama-ER.png)
 
 ### Diagrama de Classes
 
