@@ -42,4 +42,4 @@ O sistema conta com fluxo completo de vendas: Autenticação, Catálogo, Carrinh
 *   MySQL.
 
 ### 2. Banco de Dados
-Crie um banco de dados chamado `black_friday` e execute o script de database/banco.sql 
+Crie um banco de dados chamado `black_friday` a partir do script localizado em database/banco.sql 
