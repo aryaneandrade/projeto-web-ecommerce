@@ -25,13 +25,14 @@ $pedidos = $pedidoModel->listarPorUsuario($_SESSION['user_id']);
         </div>
     <?php else: ?>
         
-        <div class="table-responsive shadow-lg">
+        <div class="table-responsive shadow-lg rounded-4">
             <table class="table table-dark table-hover align-middle mb-0">
                 <thead class="text-center text-uppercase small text-warning">
                     <tr>
                         <th scope="col"># ID</th>
                         <th scope="col">Data</th>
-                        <th scope="col" class="text-start w-50">Itens Comprados</th>
+                        <th scope="col" class="text-start w-25">Itens</th>
+                        <th scope="col" class="text-start w-25">Endereço de Entrega</th>
                         <th scope="col">Total</th>
                         <th scope="col">Status</th>
                     </tr>
@@ -39,7 +40,7 @@ $pedidos = $pedidoModel->listarPorUsuario($_SESSION['user_id']);
                 <tbody class="text-center">
                     <?php foreach ($pedidos as $pedido): ?>
                         <tr>
-                            <!-- ID DO PEDIDO (CORRIGIDO PARA BRANCO) -->
+                            <!-- ID DO PEDIDO -->
                             <td class="fw-bold text-white">
                                 #<?= str_pad($pedido['id'], 4, '0', STR_PAD_LEFT) ?>
                             </td>
@@ -55,6 +56,24 @@ $pedidos = $pedidoModel->listarPorUsuario($_SESSION['user_id']);
                                 <span class="small text-light fst-italic">
                                     <?= $pedido['resumo_itens'] ?>
                                 </span>
+                            </td>
+
+                            <!-- ENDEREÇO (NOVO) -->
+                            <td class="text-start small">
+                                <?php if(!empty($pedido['rua'])): ?>
+                                    <div class="text-white mb-1">
+                                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                                        <?= $pedido['rua'] ?>, <?= $pedido['numero'] ?>
+                                    </div>
+                                    <div class="text-white-50 ms-3">
+                                        <?= $pedido['bairro'] ?> - <?= $pedido['cidade'] ?>/<?= $pedido['estado'] ?>
+                                    </div>
+                                    <div class="text-white-50 ms-3">
+                                        CEP: <?= $pedido['cep'] ?>
+                                    </div>
+                                <?php else: ?>
+                                    <span class="text-white-50 fst-italic">Endereço não registrado</span>
+                                <?php endif; ?>
                             </td>
                             
                             <!-- VALOR TOTAL -->

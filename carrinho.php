@@ -30,14 +30,15 @@ if(isset($_SESSION['carrinho']) && count($_SESSION['carrinho']) > 0) {
             <a href="<?= $BASE_URL ?>produtos.php" class="btn btn-warning fw-bold px-4 rounded-pill mt-3">Ir às Compras</a>
         </div>
     <?php else: ?>
+        
         <div class="row">
-            <div class="col-lg-8 mb-4">
-                <div class="table-responsive shadow-sm ">
+            <!-- ESQUERDA: PRODUTOS -->
+            <div class="col-lg-7 mb-4">
+                <div class="table-responsive shadow-sm rounded-4">
                     <table class="table table-hover align-middle mb-0 bg-white">
                         <thead class="table-dark text-center">
                             <tr>
                                 <th>Produto</th>
-                                <th>Preço</th>
                                 <th>Qtd</th>
                                 <th>Subtotal</th>
                                 <th>Ação</th>
@@ -48,15 +49,14 @@ if(isset($_SESSION['carrinho']) && count($_SESSION['carrinho']) > 0) {
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="<?= $BASE_URL . htmlspecialchars($item['imagem']); ?>" class="img-fluid rounded border p-1 me-3" style="width: 60px;">
-                                            <span class="fw-bold small"><?= htmlspecialchars($item['nome']); ?></span>
+                                            <img src="<?= $BASE_URL . htmlspecialchars($item['imagem']); ?>" class="img-fluid rounded border p-1 me-3" style="width: 50px;">
+                                            <span class="fw-bold small text-dark"><?= $item['nome'] ?></span>
                                         </div>
                                     </td>
-                                    <td class="text-center small">R$ <?= number_format($item['preco_promo'], 2, ',', '.'); ?></td>
-                                    <td class="text-center"><span class="badge bg-secondary"><?= $item['qtd_comprada']; ?></span></td>
-                                    <td class="text-center fw-bold text-success">R$ <?= number_format($item['subtotal'], 2, ',', '.'); ?></td>
+                                    <td class="text-center fw-bold"><?= $item['qtd_comprada'] ?></td>
+                                    <td class="text-center text-success fw-bold">R$ <?= number_format($item['subtotal'], 2, ',', '.') ?></td>
                                     <td class="text-center">
-                                        <a href="<?= $BASE_URL ?>process/cart_process.php?acao=remover_carrinho&id=<?= $item['id']; ?>" class="btn btn-sm btn-outline-danger border-0"><i class="bi bi-trash-fill"></i></a>
+                                        <a href="process/cart_process.php?acao=remover_carrinho&id=<?= $item['id'] ?>" class="text-danger"><i class="bi bi-trash-fill"></i></a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -65,34 +65,62 @@ if(isset($_SESSION['carrinho']) && count($_SESSION['carrinho']) > 0) {
                 </div>
             </div>
 
-            <div class="col-lg-4">
-                <div class="card border-0 shadow-sm rounded-4 bg-white text-dark">
-                    <div class="card-header bg-warning fw-bold text-center py-3">RESUMO</div>
-                    <div class="card-body p-4">
-                        
-                        <!-- API DE FRETE -->
-                        <div class="mb-4 p-3 bg-light rounded-3 border border-dashed">
-                            <label class="form-label fw-bold small text-muted"><i class="bi bi-truck"></i> FRETE (ViaCEP)</label>
-                            <div class="input-group input-group-sm mb-2">
-                                <input type="text" id="cepInput" class="form-control" placeholder="00000-000" maxlength="9">
-                                <button class="btn btn-dark" onclick="ApiService.consultarFrete('cepInput', 'resultadoFrete')">OK</button>
-                            </div>
-                            <div id="resultadoFrete" class="small fw-bold"></div>
-                        </div>
+            <!-- DIREITA: ENDEREÇO E TOTAL (FORMULÁRIO) -->
+            <div class="col-lg-5">
+                
+                <!-- FORMULÁRIO QUE ENVIA TUDO PARA O PROCESSAMENTO -->
+                <form action="process/cart_process.php" method="POST">
+                    <input type="hidden" name="acao" value="finalizar_pedido">
 
-                        <div class="d-flex justify-content-between fs-4 fw-bold mb-4">
-                            <span>Total:</span>
-                            <span class="text-success">R$ <?= number_format($totalCarrinho, 2, ',', '.'); ?></span>
-                        </div>
-                        
-                        <div class="d-grid gap-2">
-                            <a href="<?= $BASE_URL ?>process/cart_process.php?acao=finalizar_pedido" class="btn btn-success btn-lg fw-bold shadow-sm">
-                                <i class="bi bi-check-lg me-2"></i>FINALIZAR
-                            </a>
-                            <a href="<?= $BASE_URL ?>produtos.php" class="btn btn-outline-secondary btn-sm">Continuar Comprando</a>
+                    <div class="card border-0 shadow-sm rounded-4 bg-white text-dark">
+                        <div class="card-header bg-warning fw-bold text-center py-3">ENTREGA & PAGAMENTO</div>
+                        <div class="card-body p-4">
+                            
+                            <!-- API VIA CEP -->
+                            <label class="form-label fw-bold small"><i class="bi bi-geo-alt"></i> ENDEREÇO DE ENTREGA</label>
+                            
+                            <div class="input-group mb-2">
+                                <input type="text" id="cepInput" name="cep" class="form-control" placeholder="Digite seu CEP" maxlength="9" required>
+                                <button class="btn btn-dark" type="button" onclick="ApiService.consultarFrete()">Buscar</button>
+                            </div>
+                            
+                            <div id="msgFrete"></div>
+
+                            <!-- CAMPOS DE ENDEREÇO (Preenchidos pela API + Número manual) -->
+                            <div class="row g-2 mt-2">
+                                <div class="col-8">
+                                    <input type="text" id="rua" name="rua" class="form-control form-control-sm bg-light" placeholder="Rua" readonly required>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" id="numero" name="numero" class="form-control form-control-sm" placeholder="Nº" required>
+                                </div>
+                                <div class="col-5">
+                                    <input type="text" id="bairro" name="bairro" class="form-control form-control-sm bg-light" placeholder="Bairro" readonly required>
+                                </div>
+                                <div class="col-5">
+                                    <input type="text" id="cidade" name="cidade" class="form-control form-control-sm bg-light" placeholder="Cidade" readonly required>
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" id="estado" name="estado" class="form-control form-control-sm bg-light" placeholder="UF" readonly required>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="d-flex justify-content-between fs-4 fw-bold mb-4">
+                                <span>Total:</span>
+                                <span class="text-success">R$ <?= number_format($totalCarrinho, 2, ',', '.') ?></span>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">
+                                    <i class="bi bi-check-lg me-2"></i>FINALIZAR COMPRA
+                                </button>
+                                <a href="produtos.php" class="btn btn-outline-secondary btn-sm">Continuar Comprando</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     <?php endif; ?>

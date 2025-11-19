@@ -7,14 +7,15 @@ class Pedido {
         $this->conn = $conn;
     }
 
-    public function registrarPedido($idUsuario, $itensCarrinho) {
+   // Adicionei o argumento $endereco no final
+    public function registrarPedido($idUsuario, $itensCarrinho, $endereco) {
         try {
             $this->conn->beginTransaction();
 
             $totalPedido = 0;
             $itensParaSalvar = [];
 
-            // 1. Prepara os itens e calcula total
+            // 1. Calcula total e valida produtos
             foreach($itensCarrinho as $idProduto => $qtd) {
                 $stmt = $this->conn->prepare("SELECT * FROM produtos WHERE id = :id");
                 $stmt->bindParam(":id", $idProduto);
@@ -24,22 +25,28 @@ class Pedido {
                 if($prod) {
                     $preco = $prod['preco_promo'];
                     $totalPedido += ($preco * $qtd);
-                    
-                    $itensParaSalvar[] = [
-                        'id_produto' => $idProduto,
-                        'qtd' => $qtd,
-                        'preco' => $preco
-                    ];
+                    $itensParaSalvar[] = ['id_produto' => $idProduto, 'qtd' => $qtd, 'preco' => $preco];
                 }
             }
 
-            // 2. Cria o Pedido
-            $stmt = $this->conn->prepare("INSERT INTO pedidos (id_usuario, valor_total) VALUES (:id_usuario, :valor_total)");
+            // 2. Cria o Pedido COM ENDEREÇO
+            $sql = "INSERT INTO pedidos (id_usuario, valor_total, cep, rua, numero, bairro, cidade, estado) 
+                    VALUES (:id_usuario, :valor_total, :cep, :rua, :numero, :bairro, :cidade, :estado)";
+            
+            $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(":id_usuario", $idUsuario);
             $stmt->bindParam(":valor_total", $totalPedido);
+            
+            // Bind dos dados do endereço
+            $stmt->bindParam(":cep", $endereco['cep']);
+            $stmt->bindParam(":rua", $endereco['rua']);
+            $stmt->bindParam(":numero", $endereco['numero']);
+            $stmt->bindParam(":bairro", $endereco['bairro']);
+            $stmt->bindParam(":cidade", $endereco['cidade']);
+            $stmt->bindParam(":estado", $endereco['estado']);
+            
             $stmt->execute();
-
-            $idPedido = $this->conn->lastInsertId(); // PEGA O ID
+            $idPedido = $this->conn->lastInsertId();
 
             // 3. Salva os itens
             $stmtItem = $this->conn->prepare("INSERT INTO itens_pedido (id_pedido, id_produto, quantidade, preco_unitario) VALUES (:id_pedido, :id_produto, :qtd, :preco)");
@@ -53,8 +60,7 @@ class Pedido {
             }
 
             $this->conn->commit();
-            
-            return $idPedido; // RETORNA O ID PARA O REDIRECIONAMENTO
+            return $idPedido;
 
         } catch(Exception $e) {
             $this->conn->rollBack();
@@ -77,4 +83,5 @@ class Pedido {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }

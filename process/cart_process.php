@@ -35,43 +35,45 @@ if ($acao == 'adicionar_carrinho') {
     
     require_once("../models/Pedido.php");
 
-    // 1. Validações
+    // Validações de Login e Carrinho
     if(!isset($_SESSION['user_id'])) {
-        $_SESSION['msg'] = "Faça login para finalizar a compra!";
+        $_SESSION['msg'] = "Faça login para finalizar!";
         $_SESSION['type'] = "error";
         header("Location: ../login.php");
         exit;
     }
 
-    if(empty($_SESSION['carrinho'])) {
-        $_SESSION['msg'] = "Carrinho vazio.";
+    // CAPTURA O ENDEREÇO DO POST
+    $endereco = [
+        'cep'    => filter_input(INPUT_POST, 'cep'),
+        'rua'    => filter_input(INPUT_POST, 'rua'),
+        'numero' => filter_input(INPUT_POST, 'numero'),
+        'bairro' => filter_input(INPUT_POST, 'bairro'),
+        'cidade' => filter_input(INPUT_POST, 'cidade'),
+        'estado' => filter_input(INPUT_POST, 'estado')
+    ];
+
+    // Validação simples de endereço
+    if(empty($endereco['cep']) || empty($endereco['numero']) || empty($endereco['rua'])) {
+        $_SESSION['msg'] = "Por favor, preencha o endereço e o número da casa.";
         $_SESSION['type'] = "error";
-        header("Location: ../produtos.php");
+        header("Location: ../carrinho.php");
         exit;
     }
 
-    // 2. Registra no Banco
     $pedidoModel = new Pedido($conn);
-    $idUsuario = $_SESSION['user_id'];
-    $carrinho = $_SESSION['carrinho'];
-
-    $idNovoPedido = $pedidoModel->registrarPedido($idUsuario, $carrinho);
+    
+    // Passa o endereço para o método
+    $idNovoPedido = $pedidoModel->registrarPedido($_SESSION['user_id'], $_SESSION['carrinho'], $endereco);
 
     if($idNovoPedido) {
-        // 3. Sucesso: Limpa o carrinho
-        $_SESSION['carrinho'] = []; 
-        
-        // 4. Redireciona para a TELA DE PAGAMENTO (sucesso.php)
+        $_SESSION['carrinho'] = [];
         header("Location: ../sucesso.php?id=" . $idNovoPedido);
         exit;
-        
     } else {
         $_SESSION['msg'] = "Erro ao processar pedido.";
         $_SESSION['type'] = "error";
         header("Location: ../carrinho.php");
         exit;
     }
-} else {
-    header("Location: ../produtos.php");
-    exit;
 }
