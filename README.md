@@ -58,6 +58,7 @@ Crie um banco de dados chamado `black_friday` a partir do script localizado em d
 
 ## Estrutura de Pastas 
 
+```
 /projeto-web-uniruy-atualizado
 │
 ├── assets/                   # Arquivos estáticos (Front-end)
@@ -94,3 +95,5 @@ Crie um banco de dados chamado `black_friday` a partir do script localizado em d
 ├── meus_pedidos.php          # Tela de Histórico de Compras
 ├── produtos.php              # Tela de Listagem de Produtos (Catálogo)
 └── sucesso.php               # Tela de Pagamento com QR Code (API)
+```
+
