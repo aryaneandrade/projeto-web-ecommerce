@@ -27,7 +27,7 @@ O sistema conta com fluxo completo de vendas: Autenticação, Catálogo, Carrinh
 
 ## 🛠️ Tecnologias Utilizadas
 
-*   **Back-end:** PHP 7.4+ (PDO).
+*   **Back-end:** PHP 8+ (PDO).
 *   **Banco de Dados:** MySQL / MariaDB.
 *   **Front-end:** HTML5, CSS3, JavaScript (Fetch API).
 *   **Framework CSS:** Bootstrap 5.3 + Bootstrap Icons.
