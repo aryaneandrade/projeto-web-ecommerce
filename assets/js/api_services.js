@@ -1,4 +1,5 @@
 const ApiService = {
+    
     // API 1: ViaCEP (Preenchimento Automático)
     consultarFrete: async function() {
         const cepInput = document.getElementById('cepInput');
@@ -54,7 +55,7 @@ const ApiService = {
         }
     },
 
-    // API 2: QuickChart (Mantida igual)
+    // API 2: QuickChart 
     gerarQrCodePix: function(pedidoId, valor, imgId, modalTitleId) {
         document.getElementById(modalTitleId).innerText = `Pagamento Pedido #${pedidoId}`;
         const conteudoPix = `Pagamento_ByteShop_Pedido_${pedidoId}_Valor_${valor}`;

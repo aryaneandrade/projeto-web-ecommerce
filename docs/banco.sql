@@ -16,20 +16,20 @@ CREATE TABLE produtos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(200) NOT NULL,
     descricao TEXT,
-    preco_normal DECIMAL(10,2), -- Preço "De"
-    preco_promo DECIMAL(10,2),  -- Preço "Por" (Black Friday)
-    imagem VARCHAR(255),        -- Caminho da imagem
-    categoria VARCHAR(100)      -- Monitores, Celulares, Video Games
+    preco_normal DECIMAL(10,2), 
+    preco_promo DECIMAL(10,2),  
+    imagem VARCHAR(255),        
+    categoria VARCHAR(100)     
 );
 
--- 4. TABELA DE PEDIDOS (Atualizada com Endereço)
+-- 4. TABELA DE PEDIDOS 
 CREATE TABLE pedidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,
     valor_total DECIMAL(10,2),
     
-    -- Campos de Endereço (Snapshot da entrega)
+    -- Campos de Endereço
     cep VARCHAR(10),
     rua VARCHAR(150),
     numero VARCHAR(20),
@@ -46,7 +46,7 @@ CREATE TABLE itens_pedido (
     id_pedido INT NOT NULL,
     id_produto INT NOT NULL,
     quantidade INT,
-    preco_unitario DECIMAL(10,2), -- Preço na hora da compra
+    preco_unitario DECIMAL(10,2), 
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id),
     FOREIGN KEY (id_produto) REFERENCES produtos(id)
 );
@@ -72,9 +72,3 @@ INSERT INTO produtos (nome, descricao, preco_normal, preco_promo, imagem, catego
 ('Monitor Samsung Neo G9', '57" Dual UHD (7680x2160), Curvo 1000R, Mini-LED, 240Hz, HDMI 2.1.', 16000.00, 12499.00, 'assets/img/monitor-g9.png', 'Monitores'),
 ('Monitor AOC Hero Quad', '27" QHD 2K, 155Hz, 1ms, Painel IPS, Base Ajustável, G-Sync Compatible.', 2100.00, 1599.90, 'assets/img/monitor-aoc.png', 'Monitores');
 
--- ==========================================================
--- USUÁRIO DE TESTE (Opcional)
--- Senha é: 1234
--- ==========================================================
-INSERT INTO usuarios (nome, email, senha) VALUES 
-('Usuario Teste', 'teste@teste.com', '$2y$10$VGd4bXJjN3E0ZGVkZTAwMO.G0.g0.g0.g0.g0.g0.g0.g0.g0.g0');

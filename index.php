@@ -10,7 +10,6 @@ include_once("templates/header.php");
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <!-- AQUI ESTAVA O ERRO: Voltei para 'me-auto' (Alinha na Esquerda) -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active fw-bold" aria-current="page" href="#">Home</a>
@@ -20,6 +19,9 @@ include_once("templates/header.php");
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fw-bold" href="<?= $BASE_URL ?>produtos.php">Produtos</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link fw-bold" href="<?= $BASE_URL ?>dashboard.php">Dashboard BI</a>
                 </li>
             </ul>
         </div>
@@ -40,7 +42,6 @@ include_once("templates/header.php");
             
             <!-- Banner 1 (Monitores) -->
             <div class="carousel-item active">
-                <!-- Mantendo o nome do arquivo original -->
                 <img src="assets/img/banner-monitor.jpg" class="d-block w-100 img-fluid" alt="Banner 1">
                 <div class="carousel-caption primary-bg-color ">
                     <h5>Monitores de Alta Performance</h5>
@@ -50,7 +51,6 @@ include_once("templates/header.php");
             
             <!-- Banner 2 (Games) -->
             <div class="carousel-item">
-                <!-- Mantendo o nome do arquivo original -->
                 <img src="assets/img/banner-ps5.jpg" class="d-block w-100 img-fluid" alt="Banner 2">
                 <div class="carousel-caption primary-bg-color">
                     <h5>PlayStation 5: Nova Geração</h5>
@@ -79,7 +79,6 @@ include_once("templates/header.php");
             <div class="col-12 dark-bg-color" id="categoria-1">
                 <a href="<?= $BASE_URL ?>produtos.php?categoria=Monitores">
                     <h2>Monitores</h2>
-                    <!-- Imagem original -->
                     <img src="assets/img/categoria-monitor.png" alt="Monitor">
                 </a>
             </div>
@@ -87,7 +86,6 @@ include_once("templates/header.php");
             <div class="col-12 secondary-bg-color" id="categoria-2">
                 <a href="<?= $BASE_URL ?>produtos.php?categoria=Celulares">
                     <h2>Celulares</h2>
-                    <!-- Imagem original -->
                     <img src="assets/img/categoria-celular.png" alt="Celular">
                 </a>
             </div>
@@ -95,7 +93,6 @@ include_once("templates/header.php");
             <div class="col-12 light-bg-color" id="categoria-3">
                 <a href="<?= $BASE_URL ?>produtos.php?categoria=Video Games">
                     <h2>Video Games</h2>
-                    <!-- Imagem original -->
                     <img src="assets/img/categoria-videogame.png" alt="Video Game">
                 </a>
             </div>

@@ -58,7 +58,7 @@ $pedidos = $pedidoModel->listarPorUsuario($_SESSION['user_id']);
                                 </span>
                             </td>
 
-                            <!-- ENDEREÇO (NOVO) -->
+                            <!-- ENDEREÇO -->
                             <td class="text-start small">
                                 <?php if(!empty($pedido['rua'])): ?>
                                     <div class="text-white mb-1">

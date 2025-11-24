@@ -51,7 +51,7 @@ if ($nomeUsuario) {
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarContent">
-                    <!-- BUSCA (Ocupa o espaço disponível com flex-grow-1) -->
+                    <!-- BUSCA -->
                     <form class="d-flex mx-lg-4 my-2 my-lg-0 flex-grow-1" role="search"
                         action="<?= $BASE_URL ?>produtos.php" method="GET">
                         <div class="input-group">
@@ -68,7 +68,7 @@ if ($nomeUsuario) {
                         <!-- LÓGICA LOGADO / DESLOGADO -->
                         <?php if ($nomeUsuario): ?>
 
-                            <!-- ÁREA DO USUÁRIO (Tudo junto para não quebrar) -->
+                            <!-- ÁREA DO USUÁRIO -->
                             <li class="nav-item d-flex align-items-center">
                                 <div
                                     class="d-flex align-items-center text-white text-nowrap gap-2 bg-dark px-3 py-2 rounded-pill border border-secondary">

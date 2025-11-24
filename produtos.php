@@ -3,7 +3,7 @@ include_once("templates/header.php");
 require_once("config/database.php");
 require_once("models/Produto.php");
 
-// Instancia o Model simplificado
+// Instancia o Model 
 $produtoModel = new Produto($conn);
 
 // Recupera filtros da URL
@@ -31,7 +31,7 @@ if ($termoPesquisa) {
 
 <!-- LISTAGEM DE PRODUTOS -->
 <div class="container py-5">
-    
+
     <!-- Cabeçalho com Filtros -->
     <div class="row mb-4">
         <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-3">
@@ -40,24 +40,29 @@ if ($termoPesquisa) {
                     <i class="bi bi-funnel me-2"></i>Filtrar por Categoria
                 </button>
                 <ul class="dropdown-menu dropdown-menu-dark">
-                    <li><a class="dropdown-item" href="<?= $BASE_URL ?>produtos.php?categoria=Video Games">Video Games</a></li>
-                    <li><a class="dropdown-item" href="<?= $BASE_URL ?>produtos.php?categoria=Monitores">Monitores</a></li>
-                    <li><a class="dropdown-item" href="<?= $BASE_URL ?>produtos.php?categoria=Celulares">Celulares</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="<?= $BASE_URL ?>produtos.php?categoria=Video Games">Video
+                            Games</a></li>
+                    <li><a class="dropdown-item" href="<?= $BASE_URL ?>produtos.php?categoria=Monitores">Monitores</a>
+                    </li>
+                    <li><a class="dropdown-item" href="<?= $BASE_URL ?>produtos.php?categoria=Celulares">Celulares</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item" href="<?= $BASE_URL ?>produtos.php">Ver Todos</a></li>
                 </ul>
             </div>
 
             <?php if ($categoriaFiltro): ?>
                 <span class="badge bg-secondary p-2">
-                    Categoria: <?= htmlspecialchars($categoriaFiltro) ?> 
+                    Categoria: <?= htmlspecialchars($categoriaFiltro) ?>
                     <a href="<?= $BASE_URL ?>produtos.php" class="text-white ms-2 text-decoration-none">&times;</a>
                 </span>
             <?php endif; ?>
-            
+
             <?php if ($termoPesquisa): ?>
                 <span class="badge bg-warning text-dark p-2">
-                    Busca: "<?= htmlspecialchars($termoPesquisa) ?>" 
+                    Busca: "<?= htmlspecialchars($termoPesquisa) ?>"
                     <a href="<?= $BASE_URL ?>produtos.php" class="text-black ms-2 text-decoration-none">&times;</a>
                 </span>
             <?php endif; ?>
@@ -78,22 +83,21 @@ if ($termoPesquisa) {
             <?php foreach ($produtos as $produto): ?>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card h-100 light-bg-color border-0 shadow-sm">
-                        
+
                         <!-- Imagem -->
-                        <div class="text-center p-3 rounded-top" style="height: 220px; display: flex; align-items: center; justify-content: center;">
-                            <img src="<?= $BASE_URL . htmlspecialchars($produto['imagem']); ?>" 
-                                 class="img-fluid" 
-                                 style="max-height: 100%; max-width: 100%;" 
-                                 alt="<?= htmlspecialchars($produto['nome']); ?>">
+                        <div class="text-center p-3 rounded-top"
+                            style="height: 220px; display: flex; align-items: center; justify-content: center;">
+                            <img src="<?= $BASE_URL . htmlspecialchars($produto['imagem']); ?>" class="img-fluid"
+                                style="max-height: 100%; max-width: 100%;" alt="<?= htmlspecialchars($produto['nome']); ?>">
                         </div>
-                        
+
                         <div class="card-body d-flex flex-column text-dark">
                             <!-- Titulo -->
                             <h5 class="card-title fw-bold"><?= htmlspecialchars($produto['nome']); ?></h5>
-                            
-                            <!-- Descrição (Limitada) -->
+
+                            <!-- Descrição  -->
                             <p class="card-text text-muted small flex-grow-1">
-                                <?= substr(htmlspecialchars($produto['descricao']), 0, 80) . '...'; ?>
+                                <?= htmlspecialchars($produto['descricao']); ?>
                             </p>
 
                             <!-- Preços -->
@@ -106,8 +110,8 @@ if ($termoPesquisa) {
                                         R$ <?= number_format($produto['preco_promo'], 2, ',', '.'); ?>
                                     </span>
                                     <?php
-                                        // Cálculo simples de desconto
-                                        $desc = 100 - ($produto['preco_promo'] * 100 / $produto['preco_normal']);
+                                    // Cálculo simples de desconto
+                                    $desc = 100 - ($produto['preco_promo'] * 100 / $produto['preco_normal']);
                                     ?>
                                     <span class="badge bg-danger">-<?= round($desc) ?>%</span>
                                 </div>
@@ -118,7 +122,7 @@ if ($termoPesquisa) {
                             <form action="<?= $BASE_URL ?>process/cart_process.php" method="POST" class="mt-auto">
                                 <input type="hidden" name="acao" value="adicionar_carrinho">
                                 <input type="hidden" name="product_id" value="<?= $produto['id']; ?>">
-                                
+
                                 <button type="submit" class="btn btn-dark w-100 py-2">
                                     <i class="bi bi-cart-plus me-2"></i>Comprar
                                 </button>
