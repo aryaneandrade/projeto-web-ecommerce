@@ -77,6 +77,15 @@ O sistema conta com fluxo completo de vendas: Autenticação Segura, Catálogo D
 ├── produtos.php              # View: Catálogo de Produtos
 └── sucesso.php               # View: Tela de Pagamento com QR Code
 ```
+## Diagramas do Projeto 
+
+### Diagrama ER 
+
+![Diagrama ER](./docs/diagrama-ER.png)
+
+### Diagrama de Classes 
+
+![Diagrama de Classes](./docs/diagrama-de-classes.png)
 
 ## ⚙️ Instalação e Configuração
 
