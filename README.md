@@ -79,7 +79,7 @@ O sistema conta com fluxo completo de vendas: Autenticação Segura, Catálogo D
 ```
 ## Diagramas do Projeto 
 
-### Diagrama ER 
+### Diagrama Entidade-Relacionamento 
 
 ![Diagrama ER](./docs/diagrama-ER.png)
 
